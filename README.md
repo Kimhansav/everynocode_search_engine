@@ -5,4 +5,3 @@
 ![Alt text](BubbleProject.png "Figma Board")
 
 
-[![Figma Design](BubbleProject.png)](https://www.figma.com/file/j0LTHO16epMX4jWug51ZOV/BubbleProject?type=whiteboard&node-id=0%3A1&t=R6j3FnNL0cLVklB5-1)
