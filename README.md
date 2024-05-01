@@ -9,5 +9,7 @@
 4월 30일 오후 6:24 정리사항:
 ![Alt text](BubbleProject2.png "Figma Board")
 
+5월 2일 오전 1:54 정리사항:
+![Alt text](BubbleProject3.png "Figma Board")
 
 
