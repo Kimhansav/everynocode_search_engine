@@ -8,7 +8,7 @@
 Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?node-id=0%3A1&t=9EYnHiP8R8FaByyB-1
 
 
-#프로젝트 요약
+##프로젝트 요약
 
 작성한 코드(latest : 사용 중, old : 코드가 제대로 작동하지 않음, 사용하지 않음)
 Docker 이미지로 제작할 때 사용한 app.py, dockerfile, requirements.txt 이외에는 모두 구글 드라이브와 연결한 뒤 로컬에서 실행
