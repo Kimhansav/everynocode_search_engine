@@ -43,6 +43,8 @@ app.py : latest, Docker 이미지로 제작할 api 코드. Flask 사용함
 
 dockerfile : latest, Docker 이미지를 제작할 때 필요한 요소들, GCP 서비스 계정의 키 파일 포함
 
+requirements.txt : latest, app.py의 파일들 버전 관리
+
 
 # 훈련시킨 모델
 
