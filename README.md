@@ -10,6 +10,51 @@ Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?n
 
 bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게시글 데이터를 입력하면 전처리부터 질문-답변 선별, 텍스트 요약, sentence 임베딩 생성까지 수행합니다. 얻은 데이터셋을 Google Cloud Storage에 업로드하고, app.py를 docker 이미지로 제작한 후 Google Cloud Run에 업로드하면 검색 엔진 API를 만들 수 있습니다. 이 API의 엔드포인트에 검색 문장을 GET 요청으로 전송하면 Storage의 데이터셋에서 이와 관련된 질문-답변을 유사도가 높은 순서로 반환받습니다.
 
+## 코드 및 모델 설명
+
+### 코드
+
+#### latest(사용중)
+
+ - BP_preprocess : 카카오톡 대화내용과 커뮤니티 게시글을 전처리하는 코드
+
+ - BP_make_dataset : 모델 학습을 위해 데이터셋을 제작하는 코드
+
+ - BP_train_models : MLM, NSP, Text classification으로 모델들을 학습시키는 코드
+
+ - BP_judge_question_KcBERT : 파인튜닝한 모델로 카카오톡 텍스트 중 질문에 해당하는 텍스트를 선별하는 코드
+
+ - BP_judge_answer_KcBERT_nsp : 파인튜닝한 모델로 카카오톡 비질문 텍스트를 질문 텍스트에 소속시키는 코드
+
+ - BP_summary : 카카오톡 대화내용 + 커뮤니티 질문-답변 쌍의 질문 요약본, 답변 요약을 생성하는 코드
+
+ - BP_sentence_embed : 질문-답변 쌍들의 임베딩 벡터를 생성하는 코드
+
+ - BP_local_search_test : 로컬에서 실행하는 유사도 검색 코드
+
+#### old(사용X)
+
+ - BP_spacing : 정확도 상승을 목표로 PyKoSpacing으로 띄어쓰기를 실행하는 코드
+
+ - BP_judge_question_bespin-global/klue-roberta-small-3i4k-intent-classification : 한글 기반인 3i4k 데이터셋으로 파인튜닝된 의도 분류 모델로 카카오톡 대화내용 중 질문을 선별하는 코드
+
+ - BP_judge_answer_zeroshot_MoritzLaurer/mDeBERTa-v3-base-mnli-xnli_baseline : 영어 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드
+
+ - BP_judge_answer_zeroshot_pongjin/roberta_with_kornli : 한글 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드
+
+ - BP_server_api : Flask 사용한 서버 코드
+
+
+### 훈련시킨 모델
+
+ - Pretrained_Model : Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
+
+ - Pretrained_Model_sentence_embed : Target domain의 unlabeled corpus로 MLM 학습을 한 KoSimCSE_BERT, 데이터 47737개, 실패
+
+ - Finetuned_Model_judge_question : 질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
+
+ - Finetuned_Model_judge_answer : 질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개
+
 ## How to use
  
 구글 계정으로 로그인해 Google Cloud Platform에 새 프로젝트를 만듭니다. 이 프로젝트의 Cloud Run에는 Docker 이미지가, Cloud Storage에는 검색 엔진에 사용될 데이터셋이 업로드됩니다.
@@ -65,62 +110,51 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
   ```
   
   이후 GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
+
+  Google Drive에 업로드된 커뮤니티 데이터 전처리 결과 파일 세 개를 다운로드합니다. 간혹 이미지 인코딩 텍스트가 너무 길어 여러 셀로 나누어진 경우가 존재합니다. 전처리 함수는 데이터프레임의 셀 단위로 작동하기에 이를 처리하지 못하며, 직접 제거해주어야 합니다.
+  이미지 인코딩 텍스트를 제거한 뒤 세 파일 모두 .xlsx 형식으로 다시 Google Drive에 업로드합니다.
 </details>
 
 <details>
   <summary>2. BP_make_dataset</summary>
 
-  BP_preprocess에서 업로드했던 결과물을 호출합니다.
+  Google Drive에 업로드한 전처리 결과 파일을 호출합니다. 
+  GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
 </details>
 
 <details>
   <summary>3. BP_train_models</summary>
  
-  여기에 숨길 내용을 입력합니다. 
-  여러 줄을 사용할 수도 있습니다.
-  
-  - 목록 항목 1
-  - 목록 항목 2
+  Huggingface에서 모델을 불러와 직접 제작한 학습 데이터셋으로 학습시킵니다.
+  런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
 <details>
   <summary>4. BP_judge_question_KcBERT</summary>
  
-  여기에 숨길 내용을 입력합니다. 
-  여러 줄을 사용할 수도 있습니다.
-  
-  - 목록 항목 1
-  - 목록 항목 2
+  학습시킨 모델을 통해 카카오톡 데이터에서 텍스트 분류를 진행합니다.
+  런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
 <details>
   <summary>5. BP_judge_answer_KcBERT_nsp</summary>
  
-  여기에 숨길 내용을 입력합니다. 
-  여러 줄을 사용할 수도 있습니다.
-  
-  - 목록 항목 1
-  - 목록 항목 2
+  학습시킨 모델을 통해 카카오톡 데이터에서 텍스트 분류를 진행합니다.
+  런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
 <details>
   <summary>6. BP_summary</summary>
  
-  여기에 숨길 내용을 입력합니다. 
-  여러 줄을 사용할 수도 있습니다.
-  
-  - 목록 항목 1
-  - 목록 항목 2
+  질문-답변 선별 결과 데이터와 커뮤니티 질문답변 게시글 데이터를 결합한 뒤 각 질문-답변 쌍에 질문 요약, 답변 요약을 생성 후 추가합니다.
+  런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
 <details>
   <summary>7. BP_sentence_embed</summary>
  
-  여기에 숨길 내용을 입력합니다. 
-  여러 줄을 사용할 수도 있습니다.
-  
-  - 목록 항목 1
-  - 목록 항목 2
+  질문 요약, 답변 요약 생성 결과 데이터에서 각 질문-답변 쌍의 질문 원본과 답변 원본을 일정 비율로 반영해 임베딩을 생성합니다.
+  런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
 
@@ -136,48 +170,3 @@ API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있�
 ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/663fe13b-0d51-4d08-bac6-6db39857bbe8)
 
 dockerfile에서 키 파일의 경로를 설정하는 부분을 다운로드한 .json 파일의 경로와 일치하도록 수정하고 Docker 이미지로 제작한 뒤, Google Cloud Run에 업로드합니다. 
-
-## 코드 및 모델 설명
-
-### 코드
-
-#### latest(사용중)
-
- - BP_preprocess : 카카오톡 대화내용과 커뮤니티 게시글을 전처리하는 코드
-
- - BP_make_dataset : 모델 학습을 위해 데이터셋을 제작하는 코드
-
- - BP_train_models : MLM, NSP, Text classification으로 모델들을 학습시키는 코드
-
- - BP_judge_question_KcBERT : 파인튜닝한 모델로 카카오톡 텍스트 중 질문에 해당하는 텍스트를 선별하는 코드
-
- - BP_judge_answer_KcBERT_nsp : 파인튜닝한 모델로 카카오톡 비질문 텍스트를 질문 텍스트에 소속시키는 코드
-
- - BP_summary : 카카오톡 대화내용 + 커뮤니티 질문-답변 쌍의 질문 요약본, 답변 요약을 생성하는 코드
-
- - BP_sentence_embed : 질문-답변 쌍들의 임베딩 벡터를 생성하는 코드
-
- - BP_local_search_test : 로컬에서 실행하는 유사도 검색 코드
-
-#### old(사용X)
-
- - BP_spacing : 정확도 상승을 목표로 PyKoSpacing으로 띄어쓰기를 실행하는 코드
-
- - BP_judge_question_bespin-global/klue-roberta-small-3i4k-intent-classification : 한글 기반인 3i4k 데이터셋으로 파인튜닝된 의도 분류 모델로 카카오톡 대화내용 중 질문을 선별하는 코드
-
- - BP_judge_answer_zeroshot_MoritzLaurer/mDeBERTa-v3-base-mnli-xnli_baseline : 영어 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드
-
- - BP_judge_answer_zeroshot_pongjin/roberta_with_kornli : 한글 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드
-
- - BP_server_api : Flask 사용한 서버 코드
-
-
-### 훈련시킨 모델
-
- - Pretrained_Model : Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
-
- - Pretrained_Model_sentence_embed : Target domain의 unlabeled corpus로 MLM 학습을 한 KoSimCSE_BERT, 데이터 47737개, 실패
-
- - Finetuned_Model_judge_question : 질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
-
- - Finetuned_Model_judge_answer : 질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개
