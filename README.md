@@ -31,7 +31,44 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
 
 ### 데이터셋 제작
 
-BP_
+**주의사항** : 각 코드에서 결과 데이터를 생성해 다음 코드에서 이를 읽는 방식이므로, Google Drive에 업로드하는 결과물의 경로를 수정할 경우 현재 코드에서 저장하는 파일의 경로와 다음 코드에서 호출하는 파일의 경로가 일치해야 합니다.
+
+다음의 순서대로 코드를 하나씩 실행합니다.
+
+#### 1. BP_preprocess
+
+Google Drive에 업로드한 카카오톡 원본과 커뮤니티 게시글 원본의 이름을 코드의 변수로 설정해야 합니다. 예시는 다음과 같습니다.
+
+'''python
+drive.mount('/content/drive')
+file_path = '/content/drive/My Drive/KakaoTalkChats-1.txt'
+'''
+'''python
+qna_path = '/content/drive/My Drive/community_qna.xlsx' #커뮤니티 질문답변 게시글 데이터
+all_contents_path = '/content/drive/My Drive/community_all_contents.csv' #커뮤니티 전체 게시글 데이터
+all_comments_path = '/content/drive/My Drive/community_all_comments.csv' #커뮤니티 전체 댓글 데이터
+'''
+
+이후 GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
+
+#### 2. BP_make_dataset
+
+
+#### 3. BP_train_models
+
+
+#### 4. BP_judge_question_KcBERT
+
+
+#### 5. BP_judge_answer_KcBERT_nsp
+
+
+#### 6. BP_summary
+
+
+#### 7. BP_sentence_embed
+
+
 ### API 제작
 
 API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있도록 해당 프로젝트의 서비스 계정의 키 파일(.json)을 dockerfile에 추가해야 합니다.
@@ -46,17 +83,6 @@ API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있�
 dockerfile에서 키 파일의 경로를 설정하는 부분을 다운로드한 .json 파일의 경로와 일치하도록 수정하고 Docker 이미지로 제작한 뒤, Google Cloud Run에 업로드합니다. 
 
 ## 코드 및 모델 설명
-
-
-  <summary>추가 정보</summary>
-  이 프로젝트는 여러 가지 기능을 제공합니다.
-  
-  여기에 더 많은 설명을 추가할 수 있습니다. 예를 들어:
-  
-  - 사용 방법
-  - 설치 방법
-  - 기타 중요한 정보
-
 
 ### 코드
 
