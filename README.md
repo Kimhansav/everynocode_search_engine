@@ -39,15 +39,15 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
 
 Google Drive에 업로드한 카카오톡 원본과 커뮤니티 게시글 원본의 이름을 코드의 변수로 설정해야 합니다. 예시는 다음과 같습니다.
 
-'''python
+```python
 drive.mount('/content/drive')
 file_path = '/content/drive/My Drive/KakaoTalkChats-1.txt'
-'''
-'''python
+```
+```python
 qna_path = '/content/drive/My Drive/community_qna.xlsx' #커뮤니티 질문답변 게시글 데이터
 all_contents_path = '/content/drive/My Drive/community_all_contents.csv' #커뮤니티 전체 게시글 데이터
 all_comments_path = '/content/drive/My Drive/community_all_comments.csv' #커뮤니티 전체 댓글 데이터
-'''
+```
 
 이후 GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
 
