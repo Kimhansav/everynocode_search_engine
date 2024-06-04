@@ -19,7 +19,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
  - BP_preprocess : 카카오톡 대화내용과 커뮤니티 게시글을 전처리하는 코드
  <details>
   <summary>BP_preprocess</summary>
-
+  <br/>
   카카오톡 대화내용과 커뮤니티 게시글을 전처리하는 코드입니다.
    - 카카오톡 대화 원본 데이터 처리 과정
 
