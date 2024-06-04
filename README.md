@@ -27,14 +27,36 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
  3. 커뮤니티 질문답변 게시글 데이터(.xlsx)
   ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/ddad5e1a-0b2b-40e6-93c4-e6afcff5ae38)
 
-latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. 아래의 설명대로 BP_preprocess부터 순서대로 코드를 실행해 검색 엔진에 활용될 데이터셋을 얻습니다. 
+latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. 아래의 설명을 따라 BP_preprocess부터 순서대로 코드를 실행해 검색 엔진에 활용될 데이터셋을 얻습니다. 
 
 ### 데이터셋 제작
 
-
+BP_
 ### API 제작
 
+API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있도록 해당 프로젝트의 서비스 계정의 키 파일(.json)을 dockerfile에 추가해야 합니다.
+![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/13ef9a71-1391-406e-98a3-bf29d66e75df)
+
+![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/ed016edf-e1c2-430e-ab7e-02b1c31212cd)
+
+![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/f7f9a58d-1652-4990-b73e-d99f04387d98)
+
+![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/663fe13b-0d51-4d08-bac6-6db39857bbe8)
+
+dockerfile에서 키 파일의 경로를 설정하는 부분을 다운로드한 .json 파일의 경로와 일치하도록 수정하고 Docker 이미지로 제작한 뒤, Google Cloud Run에 업로드합니다. 
+
 ## 코드 및 모델 설명
+
+<details>
+  <summary>추가 정보</summary>
+  이 프로젝트는 여러 가지 기능을 제공합니다.
+  
+  여기에 더 많은 설명을 추가할 수 있습니다. 예를 들어:
+  
+  - 사용 방법
+  - 설치 방법
+  - 기타 중요한 정보
+</details>
 
 ### 코드
 
@@ -69,7 +91,7 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
  - BP_server_api : Flask 사용한 서버 코드
 
 
-#### 훈련시킨 모델
+### 훈련시킨 모델
 
  - Pretrained_Model : Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
 
