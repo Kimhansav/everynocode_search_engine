@@ -37,6 +37,7 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
 
 <details>
   <summary>1. BP_preprocess</summary>
+ 
   파일을 호출하는 코드 블록에서 Google Drive에 업로드한 카카오톡 원본과 커뮤니티 게시글 원본의 이름을 변수로 설정해야 합니다. 예시는 다음과 같습니다.
 
   ```python
@@ -66,53 +67,61 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
   이후 GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
 </details>
 
-#### 1. BP_preprocess
+<details>
+  <summary>2. BP_make_dataset</summary>
 
-파일을 호출하는 코드 블록에서 Google Drive에 업로드한 카카오톡 원본과 커뮤니티 게시글 원본의 이름을 변수로 설정해야 합니다. 예시는 다음과 같습니다.
+  BP_preprocess에서 업로드했던 결과물을 호출합니다.
+</details>
 
-```python
-drive.mount('/content/drive')
-file_path = '/content/drive/My Drive/KakaoTalkChats-1.txt'
-```
-```python
-qna_path = '/content/drive/My Drive/community_qna.xlsx' #커뮤니티 질문답변 게시글 데이터
-all_contents_path = '/content/drive/My Drive/community_all_contents.csv' #커뮤니티 전체 게시글 데이터
-all_comments_path = '/content/drive/My Drive/community_all_comments.csv' #커뮤니티 전체 댓글 데이터
-```
+<details>
+  <summary>3. BP_train_models</summary>
+ 
+  여기에 숨길 내용을 입력합니다. 
+  여러 줄을 사용할 수도 있습니다.
+  
+  - 목록 항목 1
+  - 목록 항목 2
+</details>
 
-결과물 저장 경로를 설정합니다. 예시는 다음과 같습니다.
+<details>
+  <summary>4. BP_judge_question_KcBERT</summary>
+ 
+  여기에 숨길 내용을 입력합니다. 
+  여러 줄을 사용할 수도 있습니다.
+  
+  - 목록 항목 1
+  - 목록 항목 2
+</details>
 
-```python
-#.xlsx 파일로 카카오톡 전처리 결과를 google drive에 저장
-talk_save_path = '/content/drive/My Drive/talk_preprocess_result_short.xlsx'
-df.to_excel(talk_save_path)
-```
-```python
-#전처리된 세 커뮤니티 데이터 파일을 google drive에 저장
-df_qna.to_excel('/content/drive/My Drive/community_qna_preprocessed.xlsx')
-df_all_contents.to_csv('/content/drive/My Drive/community_all_contents_preprocessed.csv')
-df_all_comments.to_csv('/content/drive/My Drive/community_all_comments_preprocessed.csv')
-```
+<details>
+  <summary>5. BP_judge_answer_KcBERT_nsp</summary>
+ 
+  여기에 숨길 내용을 입력합니다. 
+  여러 줄을 사용할 수도 있습니다.
+  
+  - 목록 항목 1
+  - 목록 항목 2
+</details>
 
-이후 GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
+<details>
+  <summary>6. BP_summary</summary>
+ 
+  여기에 숨길 내용을 입력합니다. 
+  여러 줄을 사용할 수도 있습니다.
+  
+  - 목록 항목 1
+  - 목록 항목 2
+</details>
 
-#### 2. BP_make_dataset
-
-
-
-#### 3. BP_train_models
-
-
-#### 4. BP_judge_question_KcBERT
-
-
-#### 5. BP_judge_answer_KcBERT_nsp
-
-
-#### 6. BP_summary
-
-
-#### 7. BP_sentence_embed
+<details>
+  <summary>7. BP_sentence_embed</summary>
+ 
+  여기에 숨길 내용을 입력합니다. 
+  여러 줄을 사용할 수도 있습니다.
+  
+  - 목록 항목 1
+  - 목록 항목 2
+</details>
 
 
 ### API 제작
