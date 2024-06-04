@@ -6,33 +6,33 @@
 
 Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?node-id=0%3A1&t=9EYnHiP8R8FaByyB-1
 
+## 개요
 
+bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게시글 데이터를 입력하면 전처리부터 질문-답변 선별, 텍스트 요약, sentence 임베딩 생성까지 수행합니다. 얻은 데이터셋을 Google Cloud Storage에 업로드하고, app.py를 docker 이미지로 제작한 후 Google Cloud Run에 업로드하면 검색 엔진 API를 만들 수 있습니다. 이 API의 엔드포인트에 검색 문장을 GET 요청으로 전송하면 Storage의 데이터셋에서 이와 관련된 질문-답변을 유사도가 높은 순서로 반환받습니다.
 
 ## How to use
  
 구글 계정으로 로그인해 Google Cloud Platform에 새 프로젝트를 만듭니다. 이 프로젝트의 Cloud Run에는 Docker 이미지가, Cloud Storage에는 검색 엔진에 사용될 데이터셋이 업로드됩니다.
 
-
 카카오톡 데이터 : 카카오톡 방 -> 채팅방 설정 -> 대화 내용 내보내기 -> 모든 메시지 내부저장소에 저장 의 순서대로 실행한 후 원본 .txt 파일을 Google Drive에 업로드합니다.
-
 
 커뮤니티 데이터 : 코드의 전처리 규칙에 맞도록 커뮤니티 게시글 데이터를 .xlsx 및 .csv 파일로 추출한 뒤 Google Drive에 업로드합니다. 전처리 코드가 작동하는 게시글 데이터 형식은 다음과 같습니다.
   
-  1. 커뮤니티 전체 게시글 데이터(.csv)
-   - ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/34da45fe-62cb-4644-843f-83b9692c35f2)
+ 1. 커뮤니티 전체 게시글 데이터(.csv)
+  ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/34da45fe-62cb-4644-843f-83b9692c35f2)
   
-  2. 커뮤니티 전체 댓글 데이터(.csv)
-   - ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/dea07a32-0d58-4570-ae4b-049ebb72da22)
+ 2. 커뮤니티 전체 댓글 데이터(.csv)
+  ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/dea07a32-0d58-4570-ae4b-049ebb72da22)
 
-  3. 커뮤니티 질문답변 게시글 데이터(.xlsx)
-   - ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/ddad5e1a-0b2b-40e6-93c4-e6afcff5ae38)
+ 3. 커뮤니티 질문답변 게시글 데이터(.xlsx)
+  ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/ddad5e1a-0b2b-40e6-93c4-e6afcff5ae38)
 
- 
 latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. 아래의 설명대로 BP_preprocess부터 순서대로 코드를 실행해 검색 엔진에 활용될 데이터셋을 얻습니다. 
 
-#### 데이터셋 제작
-  
-#### API 제작
+### 데이터셋 제작
+
+
+### API 제작
 
 ## 코드 및 모델 설명
 
