@@ -16,7 +16,6 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
 #### latest(사용 중)
 
- - BP_preprocess : 카카오톡 대화내용과 커뮤니티 게시글을 전처리하는 코드
  <details>
   <summary>BP_preprocess</summary>
   <br/>
@@ -50,6 +49,14 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
      i. '[ul]', '[ol]'과 같은 태그가 많아 []에 둘러싸인 텍스트를 set()에 입력한 후 태그 종류를 조사합니다. [] 안에 중요한 정보가 들어있는 경우도 있기 때문에 직접 제거할 태그를 선별했습니다.
      ii. 줄바꿈 문자, url 형식, 이미지 형식 텍스트를 제거합니다.
      iii. \U0001F600-\U0001F64F에 해당하는 유니코드 이모티콘을 제거합니다.
+</details>
+
+<details>
+  <summary>BP_make_dataset</summary>
+  <br/>
+  모델 학습을 위한 데이터셋을 제작하는 코드입니다. Pretraining을 위한 데이터셋, Finetuning을 위한 데이터셋이 있습니다.<br/>
+
+  - 
 </details>
 
  - BP_make_dataset : 모델 학습을 위해 데이터셋을 제작하는 코드
@@ -153,6 +160,13 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
   <summary>2. BP_make_dataset</summary>
 
   Google Drive에 업로드한 전처리 결과 파일을 호출합니다. 
+  직접 레이블링한 데이터셋을 업로드해야 합니다. 질문 데이터셋은 질문 선별 모델이, 질문답변 데이터셋은 답변 선별 모델이 학습할 예정입니다. 예시는 다음과 같습니다.
+  ```python
+  #직접 제작한 카카오톡 질문 데이터셋 로드
+  talk_question_finetune_path = '/content/drive/My Drive/talk_finetune_question_dataset.xlsx'
+  #직접 제작한 카카오톡 질문답변 데이터셋 로드
+  talk_finetune_path = '/content/drive/My Drive/talk_finetune_dataset.xlsx'
+  ```
   GPU를 사용할 필요 없이 CPU로 전체 코드를 실행합니다.
 </details>
 
