@@ -56,35 +56,86 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   모델 학습을 위한 데이터셋을 제작하는 코드입니다. Pretraining을 위한 데이터셋, Finetuning을 위한 데이터셋이 있습니다.<br/>
 
-  - 
 </details>
 
- - BP_make_dataset : 모델 학습을 위해 데이터셋을 제작하는 코드
+<details>
+  <summary>BP_train_models</summary>
+  <br/>
+  MLM, NSP, Text classification으로 모델들을 학습시키는 코드입니다.<br/>
 
- - BP_train_models : MLM, NSP, Text classification으로 모델들을 학습시키는 코드
+</details>
 
- - BP_judge_question_KcBERT : 파인튜닝한 모델로 카카오톡 텍스트 중 질문에 해당하는 텍스트를 선별하는 코드
+<details>
+  <summary>BP_judge_question_KcBERT</summary>
+  <br/>
+  파인튜닝한 모델로 카카오톡 텍스트 중 질문에 해당하는 텍스트를 선별하는 코드입니다.<br/>
 
- - BP_judge_answer_KcBERT_nsp : 파인튜닝한 모델로 카카오톡 비질문 텍스트를 질문 텍스트에 소속시키는 코드
+</details>
 
- - BP_summary : 카카오톡 대화내용 + 커뮤니티 질문-답변 쌍의 질문 요약본, 답변 요약을 생성하는 코드
+<details>
+  <summary>BP_judge_answer_KcBERT_nsp</summary>
+  <br/>
+  파인튜닝한 모델로 카카오톡 비질문 텍스트를 질문 텍스트에 소속시키는 코드입니다.<br/>
 
- - BP_sentence_embed : 질문-답변 쌍들의 임베딩 벡터를 생성하는 코드
+</details>
 
- - BP_local_search_test : 로컬에서 실행하는 유사도 검색 코드
+<details>
+  <summary>BP_summary</summary>
+  <br/>
+  카카오톡 대화내용 + 커뮤니티 질문-답변 쌍의 질문 요약본, 답변 요약을 생성하는 코드입니다.<br/>
+
+</details>
+
+<details>
+  <summary>BP_sentence_embed</summary>
+  <br/>
+  질문-답변 쌍들의 임베딩 벡터를 생성하는 코드입니다.<br/>
+
+</details>
+
+<details>
+  <summary>BP_local_search_test</summary>
+  <br/>
+  로컬에서 실행하는 유사도 검색 코드입니다.<br/>
+
+</details>
 
 #### old(사용X)
 
- - BP_spacing : 정확도 상승을 목표로 PyKoSpacing으로 띄어쓰기를 실행하는 코드
+<details>
+  <summary>BP_spacing</summary>
+  <br/>
+  정확도 상승을 목표로 PyKoSpacing으로 띄어쓰기를 실행하는 코드입니다.<br/>
 
- - BP_judge_question_bespin-global/klue-roberta-small-3i4k-intent-classification : 한글 기반인 3i4k 데이터셋으로 파인튜닝된 의도 분류 모델로 카카오톡 대화내용 중 질문을 선별하는 코드
+</details>
 
- - BP_judge_answer_zeroshot_MoritzLaurer/mDeBERTa-v3-base-mnli-xnli_baseline : 영어 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드
+<details>
+  <summary>BP_judge_question_bespin-global/klue-roberta-small-3i4k-intent-classification</summary>
+  <br/>
+  한글 기반인 3i4k 데이터셋으로 파인튜닝된 의도 분류 모델로 카카오톡 대화내용 중 질문을 선별하는 코드입니다.<br/>
 
- - BP_judge_answer_zeroshot_pongjin/roberta_with_kornli : 한글 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드
+</details>
 
- - BP_server_api : Flask 사용한 서버 코드
+<details>
+  <summary>BP_judge_answer_zeroshot_MoritzLaurer/mDeBERTa-v3-base-mnli-xnli_baseline</summary>
+  <br/>
+  영어 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드입니다.<br/>
 
+</details>
+
+<details>
+  <summary>BP_judge_answer_zeroshot_pongjin/roberta_with_kornli</summary>
+  <br/>
+  한글 기반 모델로 zero-shot text classification을 수행하는 모델을 이용해 질문에 대한 답변을 선별하는 코드입니다.<br/>
+
+</details>
+
+<details>
+  <summary>BP_server_api</summary>
+  <br/>
+  Flask 사용한 서버 코드입니다.<br/>
+
+</details>
 
 ### 훈련시킨 모델
 
