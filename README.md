@@ -2,7 +2,7 @@
 
  - 2024년 3월 27일 ~ 2024년 5월 10일 : 1차 종료(기본적인 틀)
 
- - 2024년 n월 ~ : 2차 진행 예정(멀티모달 추가 및 기존 기능 개선)
+ - 2024년 6월 22일 ~ : 2차 진행 중(정량 지표를 통해 모델의 성능 개선)
 
 Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?node-id=0%3A1&t=9EYnHiP8R8FaByyB-1
 
