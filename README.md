@@ -154,11 +154,57 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
  - Pretrained_Model : Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
 
+ <details>
+  <summary>Pretrained_Model</summary>
+  <br/>
+  Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
+  <br/>
+
+ </details>
+
  - Pretrained_Model_sentence_embed : Target domain의 unlabeled corpus로 MLM 학습을 한 KoSimCSE_BERT, 데이터 47737개, 실패
+
+ <details>
+  <summary>Pretrained_Model_sentence_embed</summary>
+  <br/>
+  Target domain의 unlabeled corpus로 MLM 학습을 한 KoSimCSE_BERT, 데이터 47737개, 실패
+  <br/>
+
+ </details>
 
  - Finetuned_Model_judge_question : 질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
 
+ <details>
+  <summary>Finetuned_Model_judge_question</summary>
+  <br/>
+  질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
+  <br/>
+  Accuracy : 0.8914956011730205
+  <br/>
+  Precision : 0.8888034355835807
+  <br/>
+  Recall : 0.8914956011730205
+  <br/>
+  F1 : 0.8877895685755146
+
+ </details>
+
  - Finetuned_Model_judge_answer : 질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개
+
+ <details>
+  <summary>Finetuned_Model_judge_answer</summary>
+  <br/>
+  질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개
+  <br/>
+  Accuracy : 0.8833619210977701
+  <br/>
+  Precision : 0.8600155933260565
+  <br/>
+  Recall : 0.8833619210977701
+  <br/>
+  F1 : 0.8641397865894188
+
+ </details>
 
 ## How to use
  
