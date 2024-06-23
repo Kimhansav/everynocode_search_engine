@@ -95,8 +95,45 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 <details>
   <summary>BP_summary</summary>
   <br/>
-  카카오톡 대화내용 + 커뮤니티 질문-답변 쌍의 질문 요약본, 답변 요약을 생성하는 코드입니다.<br/>
+  카카오톡 대화내용 + 커뮤니티 질문-답변 쌍의 질문 요약본, 답변 요약을 생성하는 코드입니다.
+  <br/>
+  모델은 EbanLee/kobart-summary-v3를 사용했습니다. 한글 요약을 수행하는 모델 중 이 모델이 말의 뉘앙스를 살리며 생성한 결과가 이상적인 목표와 가장 비슷했습니다.
+  <br/>
+ 
+  질문에 대한 요약을 생성할 때 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  question_summary_ids = model.generate(
+    input_ids = input_ids,
+    attention_mask = attention_mask,
+    bos_token_id = model.config.bos_token_id,
+    eos_token_id = model.config.eos_token_id,
+    length_penalty = 1.0,
+    max_length = 100,
+    min_length = 5,
+    num_beams = 6,
+    repetition_penalty = 1.5,
+    no_repeat_ngram_size = 3,
+  )
+  ```
 
+  답변에 대학 요약을 생성할 때 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  answer_summary_ids = model.generate(
+    input_ids = input_ids,
+    attention_mask = attention_mask,
+    bos_token_id = model.config.bos_token_id,
+    eos_token_id = model.config.eos_token_id,
+    length_penalty = 1.0,
+    max_length = 200,
+    min_length = 5,
+    num_beams = 6,
+    repetition_penalty = 1.5,
+    no_repeat_ngram_size = 3,
+  )
+  ```
+
+  각 과정에서 사용된 하이퍼파라미터는 추후 성능 개선 작업에서 수정될 예정입니다.
+  
 </details>
 
 <details>
@@ -173,6 +210,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
   <br/>
+  
   Accuracy : 0.8914956011730205
   <br/>
   Precision : 0.8888034355835807
