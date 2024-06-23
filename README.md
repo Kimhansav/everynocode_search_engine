@@ -152,8 +152,6 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
 ### 훈련시킨 모델
 
- - Pretrained_Model : Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
-
  <details>
   <summary>Pretrained_Model</summary>
   <br/>
@@ -162,8 +160,6 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
  </details>
 
- - Pretrained_Model_sentence_embed : Target domain의 unlabeled corpus로 MLM 학습을 한 KoSimCSE_BERT, 데이터 47737개, 실패
-
  <details>
   <summary>Pretrained_Model_sentence_embed</summary>
   <br/>
@@ -171,8 +167,6 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
 
  </details>
-
- - Finetuned_Model_judge_question : 질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
 
  <details>
   <summary>Finetuned_Model_judge_question</summary>
@@ -188,8 +182,6 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   F1 : 0.8877895685755146
 
  </details>
-
- - Finetuned_Model_judge_answer : 질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개
 
  <details>
   <summary>Finetuned_Model_judge_answer</summary>
