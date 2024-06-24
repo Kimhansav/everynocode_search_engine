@@ -60,21 +60,45 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
    - Pretraining Dataset
 
     1. Kss를 활용해서 데이터프레임의 각 열에 대해 해당 열에 소속된 텍스트들을 문장 단위로 분리하는 함수를 제작했습니다.
-    2. 카카오톡 대화문 데이터, 커뮤니티 질문답변 게시글 데이터, 커뮤니티 전체 게시글 데이터, 커뮤니티 전체 댓글 데이터를 함수로 처리한 뒤 결과들을 모두 합칩니다.
+    
+    2. 카카오톡 대화문 데이터, 커뮤니티 질문답변 게시글 데이터, 커뮤니티 전체 게시글 데이터, 커뮤니티 전체 댓글 데이터를 함수로 처리한 뒤 결과들을 모두 결합했습니다.
 
    - Finetuning Dataset(질문 선별 작업)
 
+    1. 데이터셋의 레이블별로 토큰화된 길이가 다르다면 모델의 학습에 데이터의 길이가 영향을 줄 여지가 있습니다. 이를 방지하기 위해 각 데이터를 문장의 형태를 깨지 않도록 n개의 덩어리로 분리하는 함수를 제작했습니다.
     
+    2. 커뮤니티 데이터 중에서는 positive sample로 질문, negative sample로 답변, 빌더로그 글을 사용했습니다. bubble.io에 대한 내용이 많이 포함된 평서문 데이터로 빌더로그 글이 적당했습니다. 그 다음 스퀘어와 쇼케이스 글의 경우 bubble.io 내용이 별로 포함되지 않았지만 올바른 평서문을 얻을 수 있기에 차선책으로 보류해 두었고, 자유 주제 글은 질문도 섞여 있었기에 추가적인 선별에 수작업이 필요해 제외했습니다.
+    
+    3. 커뮤니티 질문 데이터는 그대로 두고, 답변은 2등분, 빌더로그 글은 6등분한 뒤 카카오톡 대화문 중 직접 질문을 선별한 데이터셋과 결합해 질문 선별 학습 데이터셋을 완성했습니다. 
     
    - Finetuning Dataset(답변 선별 작업)
 
+    1. 제작한 데이터셋에는 Negative sample이 없기 때문에, Positive sample의 n배만큼 Negative sample을 생성하는 함수를 제작했습니다. 전체 데이터를 다루는 인덱스를 활용해서, Positive sample에 사용된 데이터의 인덱스를 제외한 나머지 인덱스들에서 랜덤 추출을 실행해 Negative sample을 제작합니다.
+    
+    2. 커뮤니티 데이터셋의 경우 질문답변 게시글을 사용했습니다. 답변의 경우 하나의 질문에 대한 여러 답변 모두가 하나의 데이터프레임 셀 안에 들어있었습니다. 이를 문장 단위가 아닌 답변의 단위로 분리한 뒤, 선별된 답변을 질문 뒤에 하나하나 붙여가는 방식으로 Positive sample을 제작했습니다. 예시는 다음과 같습니다.
+     - 질문이 A, 이에 대한 답변이 B, C, D 라고 가정합니다. 이때 만들어지는 Positive sample은 (질문, 답변인지 판별된 텍스트)의 형식으로 나타내면 (A, B), ((A+B), C), ((A+B+C), D) 가 됩니다.  
+     
+    3. Negative sample의 경우 위에서 제작한 n배 샘플링 함수를 통해 생성합니다. 예시는 다음과 같습니다.
+     - 위의 과정에서 A, B, C, D를 활용해 Positive sample을 제작했습니다. Negative sample에서 활용되는 데이터는 전체 데이터 중에서 A, B, C, D를 제외한 뒤 n개의 데이터가 무작위로 선택됩니다. 예를 들어 n = 2로 설정한 뒤 ((A+B), C)에 적용할 데이터로 X, Y가 선택되었다고 가정합니다. 이때 만들어지는 Negative sample은 ((A+B), X), ((A+B), Y)가 됩니다. 이러한 샘플링 과정은 전체 Positive sample의 개수만큼 반복됩니다.
+     
+    4. 카카오톡 대화문 중 질문과 이에 대한 답변쌍 데이터를 직접 선별해 커뮤니티 데이터의 Positive sample 형식으로 제작했습니다. 이후 커뮤니티 데이터와 마찬가지로 인덱스를 이용한 Negative sample 생성 과정을 거쳤습니다. 커뮤니티 데이터셋과 카카오톡 데이터셋을 결합해 답변 선별 학습 데이터셋을 완성했습니다.
+    
     
 </details>
 
 <details>
   <summary>BP_train_models</summary>
   <br/>
-  MLM, NSP, Text classification으로 모델들을 학습시키는 코드입니다.<br/>
+  MLM, NSP, Text classification으로 모델들을 학습시키고 성능을 평가하는 코드입니다. 학습시킨 모델은 beomi/kcbert-base와 BM-K/KoSimCSE-bert-multitask입니다. 
+  <br/>
+  기존 모델이 학습한 데이터와 타겟 도메인의 데이터가 사용하는 어휘가 크게 다르다고 판단했습니다. 이를 해결하기 위해 soynlp를 활용해 타겟 도메인의 Pretraining Dataset에서 도메인 특화 어휘를 추출했고, 이를 토크나이저의 사전에 추가했습니다. 이후 MLM을 통해 도메인에 적응시켰습니다.
+  <br/>
+  MLM 학습의 경우 학습 데이터 : 검증 데이터를 9 : 1로 설정했습니다. Sequence Classification과 NSP의 경우 학습 데이터 : 검증 데이터 : 테스트 데이터를 8 : 1 : 1로 설정했습니다. 이때 레이블 간 데이터 수의 불균형이 존재해 stratify 옵션을 사용했습니다.
+  <br/>
+  성능 평가의 경우 먼저 질문 선별 모델, 답변 선별 모델에 대해서 수행했습니다. 평가 기준은 Accuracy, Precision, Recall, F1 score, 학습 시 초당 처리한 스텝 수, 학습 시 초당 처리한 샘플 수입니다. 학습에 사용된 GPU는 Colab의 T4입니다.
+  <br/>
+  모델에 대해 자세한 설명은 아래의 '훈련시킨 모델'에 있습니다.
+  <br/>
 
 </details>
 
@@ -82,7 +106,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <summary>BP_judge_question_KcBERT</summary>
   <br/>
   파인튜닝한 모델로 카카오톡 텍스트 중 질문에 해당하는 텍스트를 선별하는 코드입니다.<br/>
-
+  
 </details>
 
 <details>
@@ -100,7 +124,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   모델은 EbanLee/kobart-summary-v3를 사용했습니다. 한글 요약을 수행하는 모델 중 이 모델이 말의 뉘앙스를 살리며 생성한 결과가 이상적인 목표와 가장 비슷했습니다.
   <br/>
  
-  질문에 대한 요약을 생성할 때 하이퍼파라미터는 다음과 같습니다.
+  질문에 대한 요약을 생성할 때 설정한 하이퍼파라미터는 다음과 같습니다.
   ```python
   question_summary_ids = model.generate(
     input_ids = input_ids,
@@ -116,7 +140,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   )
   ```
 
-  답변에 대학 요약을 생성할 때 하이퍼파라미터는 다음과 같습니다.
+  답변에 대한 요약을 생성할 때 설정한 하이퍼파라미터는 다음과 같습니다.
   ```python
   answer_summary_ids = model.generate(
     input_ids = input_ids,
@@ -194,6 +218,35 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   Target domain의 unlabeled corpus로 MLM 학습을 한 KcBERT, 데이터 47737개
   <br/>
+  타겟 도메인에 적응한 후 토큰 임베딩의 크기는 (44857, 768)입니다.
+  <br/>
+  
+  학습 시 설정된 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  training_args = TrainingArguments(
+    output_dir = './results',
+    evaluation_strategy = 'steps',
+    eval_steps = 500,
+    save_strategy = "steps",
+    save_steps = 500,
+    num_train_epochs = 3,
+    save_total_limit = 3,
+    per_device_eval_batch_size = 8,
+    per_device_train_batch_size = 8,
+    warmup_steps = 300, 
+    weight_decay = 0.01, 
+    logging_dir = "./logs",
+    load_best_model_at_end = True
+   )
+   
+   trainer = Trainer(
+    model = KcBERT_model,
+    args = training_args,
+    train_dataset = pretrain_dataset['train'],
+    eval_dataset = pretrain_dataset['test'],
+    callbacks = [EarlyStoppingCallback(patience = 5)]
+  )
+  ```
 
  </details>
 
@@ -202,6 +255,35 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   Target domain의 unlabeled corpus로 MLM 학습을 한 KoSimCSE_BERT, 데이터 47737개, 실패
   <br/>
+  타겟 도메인에 적응한 후 토큰 임베딩의 크기는 (43041, 768)입니다.
+  <br/>
+
+  학습 시 설정된 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  training_args = TrainingArguments(
+    output_dir = './results',
+    evaluation_strategy = 'steps',
+    eval_steps = 500,
+    save_strategy = "steps",
+    save_steps = 500,
+    num_train_epochs = 3,
+    save_total_limit = 3,
+    per_device_eval_batch_size = 8,
+    per_device_train_batch_size = 8,
+    warmup_steps = 300, 
+    weight_decay = 0.01, 
+    logging_dir = "./logs",
+    load_best_model_at_end = True
+  )
+
+  trainer = Trainer(
+    model = KoSim_model,
+    args = training_args,
+    train_dataset = pretrain_dataset['train'],
+    eval_dataset = pretrain_dataset['test'],
+    callbacks = [EarlyStoppingCallback(patience = 5)]
+  )
+  ```
 
  </details>
 
@@ -210,7 +292,39 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개
   <br/>
-  
+
+  학습 시 설정된 하이퍼파라미터는 다음과 같습니다.
+  ```python
+    training_args = TrainingArguments(
+    output_dir = './results',
+    learning_rate = 5e-5,
+    evaluation_strategy = 'steps',
+    eval_steps = 100,
+    save_strategy = "steps",
+    save_steps = 100,
+    num_train_epochs = 3,
+    save_total_limit = 3,
+    per_device_eval_batch_size = 8,
+    per_device_train_batch_size = 8,
+    warmup_steps = 100, 
+    weight_decay = 0.01, 
+    logging_dir = "./logs",
+    load_best_model_at_end = True
+  )
+
+  trainer = Trainer(
+    model = pretrained_model,
+    args = training_args,
+    train_dataset = train_dataset,
+    eval_dataset = valid_dataset,
+    callbacks = [EarlyStoppingCallback(patience = 3)]
+  )
+  ```
+  전체 1023스텝 중 500스텝에서 EarlyStopping에 의해 학습이 중단되었습니다.
+  <br/>
+
+  테스트 지표는 다음과 같습니다.
+  <br/>
   Accuracy : 0.8914956011730205
   <br/>
   Precision : 0.8888034355835807
@@ -218,6 +332,10 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   Recall : 0.8914956011730205
   <br/>
   F1 : 0.8877895685755146
+  <br/>
+  train_samples_per_second(T4 GPU) : 26.447
+  <br/>
+  train_steps_per_second(T4 GPU) : 3.31
 
  </details>
 
@@ -226,6 +344,39 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개
   <br/>
+
+  학습 시 설정된 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  training_args = TrainingArguments(
+    output_dir = './results',
+    learning_rate = 2e-5, 
+    evaluation_strategy = 'steps',
+    eval_steps = 200,
+    save_strategy = "steps",
+    save_steps = 200,
+    num_train_epochs = 3,
+    save_total_limit = 3,
+    per_device_eval_batch_size = 8,
+    per_device_train_batch_size = 8,
+    warmup_steps = 200, 
+    weight_decay = 0.01, 
+    logging_dir = "./logs",
+    load_best_model_at_end = True
+  )
+
+  trainer = Trainer(
+    model = pretrained_model,
+    args = training_args,
+    train_dataset = train_dataset,
+    eval_dataset = valid_dataset,
+    callbacks = [EarlyStoppingCallback(patience = 3)]
+  )
+  ```
+  전체 1749스텝 중 800스텝에서 EarlyStopping에 의해 학습이 중단되었습니다.
+  <br/>
+
+  테스트 지표는 다음과 같습니다.
+  <br/>
   Accuracy : 0.8833619210977701
   <br/>
   Precision : 0.8600155933260565
@@ -233,6 +384,11 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   Recall : 0.8833619210977701
   <br/>
   F1 : 0.8641397865894188
+  <br/>
+  train_samples_per_second(T4 GPU) : 28.766
+  <br/>
+  train_steps_per_second(T4 GPU) : 3.6
+  
 
  </details>
 
