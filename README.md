@@ -95,7 +95,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   <br/>
   MLM 학습의 경우 학습 데이터 : 검증 데이터를 9 : 1로 설정했습니다. Sequence Classification과 NSP의 경우 학습 데이터 : 검증 데이터 : 테스트 데이터를 8 : 1 : 1로 설정했습니다. 이때 레이블 간 데이터 수의 불균형이 존재해 stratify 옵션을 사용했습니다.<br/>
   <br/>
-  성능 평가의 경우 먼저 질문 선별 모델, 답변 선별 모델에 대해서 수행했습니다. 평가 기준은 Accuracy, Precision, Recall, F1 score, 학습 시 초당 처리한 스텝 수, 학습 시 초당 처리한 샘플 수입니다. 학습에 사용된 GPU는 Colab의 T4입니다.<br/>
+  성능 평가의 경우 먼저 질문 선별 모델, 답변 선별 모델에 대해서 수행했습니다. 평가 기준은 Accuracy, Precision, Recall, F1 score, 학습 시 초당 처리한 스텝 수, 학습 시 초당 처리한 샘플 수, 테스트 시 초당 처리한 스텝 수, 테스트 시 초당 처리한 샘플 수입니다. 학습과 테스트에 사용된 GPU는 Colab의 T4입니다.<br/>
   <br/>
   모델에 대해 자세한 설명은 아래의 '훈련시킨 모델'에 있습니다.
   <br/>
@@ -358,6 +358,10 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   train_samples_per_second(T4 GPU) : 26.447
   <br/>
   train_steps_per_second(T4 GPU) : 3.31
+  <br/>
+  test_samples_per_second(T4 GPU) : 52.231
+  <br/>
+  test_steps_per_second(T4 GPU) : 6.586
 
  </details>
 
@@ -410,6 +414,10 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   train_samples_per_second(T4 GPU) : 28.766
   <br/>
   train_steps_per_second(T4 GPU) : 3.6
+  <br/>
+  test_samples_per_second(T4 GPU) : 52.804
+  <br/>
+  test_steps_per_second(T4 GPU) : 6.612
   
 
  </details>
