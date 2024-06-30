@@ -317,9 +317,9 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   질문 데이터셋으로 Sequence classification 학습을 한 Pretrained_Model, 데이터 3407개<br/>
   <br/>
 
-  학습 시 설정된 하이퍼파라미터는 다음과 같습니다.
+  StratifiedKFold를 적용하지 않고 학습할 때 설정된 하이퍼파라미터는 다음과 같습니다.
   ```python
-    training_args = TrainingArguments(
+  training_args = TrainingArguments(
     output_dir = './results',
     learning_rate = 5e-5,
     evaluation_strategy = 'steps',
@@ -344,26 +344,48 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
     callbacks = [EarlyStoppingCallback(patience = 3)]
   )
   ```
-  전체 1023스텝 중 500스텝에서 EarlyStopping에 의해 학습이 중단되었습니다.
-  <br/>
 
-  테스트 지표는 다음과 같습니다.
-  <br/>
-  Accuracy : 0.8914956011730205
-  <br/>
-  Precision : 0.8888034355835807
-  <br/>
-  Recall : 0.8914956011730205
-  <br/>
-  F1 : 0.8877895685755146
-  <br/>
-  train_samples_per_second(T4 GPU) : 26.447
-  <br/>
-  train_steps_per_second(T4 GPU) : 3.31
-  <br/>
-  test_samples_per_second(T4 GPU) : 52.231
-  <br/>
-  test_steps_per_second(T4 GPU) : 6.586
+  StratifiedKFold를 적용하고 학습할 때 설정된 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  #n_splits를 통해 fold 개수 조정
+  n_splits = 5
+
+  # StratifiedKFold 설정
+  skf = StratifiedKFold(n_splits=n_splits, shuffle=True)
+  for fold, (train_idx, val_idx) in enumerate(skf.split(question_train_dataset, question_train_dataset['label'])):
+
+    # 훈련 세트와 검증 세트 분리
+    question_train_dataset_fold = question_train_dataset.select(train_idx)
+    question_val_dataset_fold = question_train_dataset.select(val_idx)
+
+    # 훈련 설정
+    training_args = TrainingArguments(
+        output_dir="./results",
+        evaluation_strategy = "steps",
+        eval_steps = 100,
+        save_strategy = "steps",
+        save_steps = 100,
+        learning_rate = 5e-5,
+        num_train_epochs = 3, 
+        per_device_train_batch_size = 8,
+        per_device_eval_batch_size = 8,
+        weight_decay = 0.01, 
+        logging_dir = "./logs",
+        load_best_model_at_end = True
+
+    )
+
+    # 트레이너 초기화 및 훈련
+    trainer = Trainer(
+        model = pretrained_model,
+        args = training_args,
+        train_dataset = question_train_dataset_fold,
+        eval_dataset = question_val_dataset_fold,
+        callbacks = [EarlyStoppingCallback(patience = 3)]
+    )
+
+    trainer.train()
+  ```
 
  </details>
 
@@ -373,7 +395,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   질문-답변 데이터셋으로 NSP 학습을 한 Pretrained_Model, 데이터 5824개<br/>
   <br/>
 
-  학습 시 설정된 하이퍼파라미터는 다음과 같습니다.
+  StratifiedKFold를 적용하지 않고 학습할 때 설정된 하이퍼파라미터는 다음과 같습니다.
   ```python
   training_args = TrainingArguments(
     output_dir = './results',
@@ -400,27 +422,47 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
     callbacks = [EarlyStoppingCallback(patience = 3)]
   )
   ```
-  전체 1749스텝 중 800스텝에서 EarlyStopping에 의해 학습이 중단되었습니다.
-  <br/>
 
-  테스트 지표는 다음과 같습니다.
-  <br/>
-  Accuracy : 0.8833619210977701
-  <br/>
-  Precision : 0.8600155933260565
-  <br/>
-  Recall : 0.8833619210977701
-  <br/>
-  F1 : 0.8641397865894188
-  <br/>
-  train_samples_per_second(T4 GPU) : 28.766
-  <br/>
-  train_steps_per_second(T4 GPU) : 3.6
-  <br/>
-  test_samples_per_second(T4 GPU) : 52.804
-  <br/>
-  test_steps_per_second(T4 GPU) : 6.612
-  
+  StratifiedKFold를 적용하고 학습할 때 설정된 하이퍼파라미터는 다음과 같습니다.
+  ```python
+  #n_splits를 통해 fold 개수 조정
+  n_splits = 5
+
+  # StratifiedKFold 설정
+  skf = StratifiedKFold(n_splits=n_splits, shuffle=True)
+  for fold, (train_idx, val_idx) in enumerate(skf.split(answer_train_dataset, answer_train_dataset['label'])):
+
+    # 훈련 세트와 검증 세트 분리
+    answer_train_dataset_fold = answer_train_dataset.select(train_idx)
+    answer_val_dataset_fold = answer_train_dataset.select(val_idx)
+    # 훈련 설정
+    training_args = TrainingArguments(
+        output_dir="./results",
+        evaluation_strategy = "steps",
+        eval_steps = 100,
+        save_strategy = "steps",
+        save_steps = 100,
+        learning_rate = 5e-5,
+        num_train_epochs = 3, 
+        per_device_train_batch_size = 8,
+        per_device_eval_batch_size = 8,
+        weight_decay = 0.01, 
+        logging_dir = "./logs",
+        load_best_model_at_end = True
+
+    )
+
+    # 트레이너 초기화 및 훈련
+    trainer = Trainer(
+        model = pretrained_model,
+        args = training_args,
+        train_dataset = answer_train_dataset_fold,
+        eval_dataset = answer_val_dataset_fold,
+        callbacks = [EarlyStoppingCallback(patience = 3)]
+    )
+
+    trainer.train()
+ ```
 
  </details>
 
