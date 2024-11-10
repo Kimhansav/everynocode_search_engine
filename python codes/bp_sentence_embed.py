@@ -105,10 +105,17 @@ df['answer_embedding'] = [sentence.cpu().numpy() for batches in aresult for sent
 k = 0.8
 df['embedding'] = [k * df.iloc[i]['question_embedding'] + (1 - k) * df.iloc[i]['answer_embedding'] for i in range(len(df))]
 
+#필요없는 질문임베딩, 답변임베딩은 제거
+df = df.drop(['question_embedding', 'answer_embedding'], axis = 1)
+
+#json으로 저장할 파일은 json.dumps 적용 전에 복사해두기
+df_json = df.copy()
+
 #csv파일로 저장할 때 쉼표가 사라지지 않게 해야 함, json.dumps 사용
 df['embedding'] = df['embedding'].apply(lambda x: json.dumps(x.tolist()))
 
-df = df.drop(['question_embedding', 'answer_embedding'], axis = 1)
+#json파일로 저장한 뒤 elasticsearch에 사용하기 위해서는 json.dumps를 사용하지 않아야 함
+df_json['embedding'] = df_json['embedding'].apply(lambda x: x.tolist())
 
 print(qresult[:3])
 print(aresult[:3])
@@ -117,8 +124,20 @@ print(df['embedding'].to_list()[:3])
 print(len(df['embedding'][55]))
 print(df['embedding'])
 
+print(type(df_json['embedding'][0]))
+
 #.csv 파일로 google drive에 저장 (나중에 google cloud storage에 저장해야 함)
 save_path = '/content/drive/My Drive/sentence_embed_result_short.csv'
 
 df.to_csv(save_path)
 
+"""##요구되는 형식에 맞도록 json 파일로 저장"""
+
+
+
+print(df.to_json(orient="records", indent = 2, force_ascii = False))
+
+#.json 파일로 google drive에 저장
+json_save_path = '/content/drive/My Drive/sentence_embed_result_short.json'
+
+df_json.to_json(json_save_path, orient = 'records', indent = 2, force_ascii = False)
