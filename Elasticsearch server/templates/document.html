@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p><a href="javascript:history.back(1)" class="btn btn-primary">← Back</a></p>
+    <h2>{{questioner}} : {{ title }}</h2>
+    {% for paragraph in paragraphs %}
+        <p>{{ paragraph }}</p>
+    {% endfor %}<br><br>
+    {% if url %}<a href="{{ url }}">본문 링크</a>{% endif %}
+{% endblock %}
