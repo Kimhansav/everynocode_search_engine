@@ -22,10 +22,6 @@ class Search:
         # self.es = Elasticsearch('https://localhost:9200', 로컬의 경우 localhost:9200으로 통신
         #                         basic_auth=("elastic", os.getenv("ELASTIC_PASSWORD")), verify_certs=False) 
 
-        #gcp 버전(외부ip)
-        # self.es = Elasticsearch('http://34.47.80.218:9200', 
-        #                         basic_auth=("elastic", 'votmdnjem'), verify_certs=False) 
-
         #gcp 수정버전(내부ip)
         self.es = Elasticsearch('http://34.47.80.218:9200', #gcp에 업로드할 경우 내부 ip로 통신
                                 basic_auth=("elastic", os.getenv("ELASTIC_PASSWORD")), verify_certs=False) 
