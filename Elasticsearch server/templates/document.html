@@ -2,7 +2,8 @@
 
 {% block content %}
     <p><a href="javascript:history.back(1)" class="btn btn-primary">← Back</a></p>
-    <h2>{{questioner}} : {{ title }}</h2>
+    <!-- <h2>{{questioner}} : {{ title }}</h2> 질문에서 실명 가리기 위해 주석처리 -->
+    <h2>{{ title }}</h2>
     {% for paragraph in paragraphs %}
         <p>{{ paragraph }}</p>
     {% endfor %}<br><br>

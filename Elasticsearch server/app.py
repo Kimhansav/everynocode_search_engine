@@ -142,7 +142,9 @@ def get_document(id):
     except (ValueError, SyntaxError):
         respondents = ast.literal_eval('["' + document['_source']['respondent'] + '"]')
     
-    paragraphs = [f'{respondent} : {answer}' for respondent, answer in zip(respondents, answers)]
+    # paragraphs = [f'{respondent} : {answer}' for respondent, answer in zip(respondents, answers)] #닉네임에 실명 나타난 경우가 있어서 주석처리
+    
+    paragraphs = [f'답변 : {answer}' for respondent, answer in zip(respondents, answers)] #닉네임에 실명 나타난 경우가 있어서 주석처리
     url = document['_source']['url'] if len(document['_source']['url']) > 5 else None
     return render_template('document.html', title=title, questioner = questioner, paragraphs=paragraphs, url = url)
 
