@@ -8,14 +8,14 @@ Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?n
 
 모델 성능 실험 기록.pptx에서 사용한 모델들의 비교를 확인할 수 있습니다.
 
-
+<br/><br/><br/>
 
 
 ## 개요
 
 bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게시글 데이터를 입력하면 전처리부터 질문-답변 선별, 텍스트 요약, sentence 임베딩 생성까지 수행합니다. 얻은 데이터셋을 Google Cloud Storage에 업로드하고, app.py를 docker 이미지로 제작한 후 Google Cloud Run에 업로드하면 검색 엔진 API를 만들 수 있습니다. 이 API의 엔드포인트에 검색 문장을 GET 요청으로 전송하면 Storage의 데이터셋에서 이와 관련된 질문-답변을 유사도가 높은 순서로 반환받습니다.
 
-
+<br/><br/><br/>
 
 
 ## 코드 및 모델 설명
@@ -241,7 +241,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
 </details>
 
-
+<br/><br/><br/>
 
 
 ### 훈련시킨 모델
@@ -475,7 +475,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
  </details>
 
-
+<br/><br/><br/>
 
 
 ## How to use
@@ -497,7 +497,7 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
 latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. 아래의 설명을 따라 BP_preprocess부터 순서대로 코드를 실행해 검색 엔진에 활용될 데이터셋을 얻습니다. 
 
-
+<br/><br/><br/>
 
 
 ### 데이터셋 제작
@@ -590,8 +590,7 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
   런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
-
-
+<br/><br/><br/>
 
 
 ### API 제작
@@ -607,7 +606,7 @@ API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있�
 
 dockerfile에서 키 파일의 경로를 설정하는 부분을 다운로드한 .json 파일의 경로와 일치하도록 수정하고 Docker 이미지로 제작한 뒤, Google Cloud Run에 업로드합니다. 
 
-
+<br/><br/><br/>
 
 
 ## 추후 개선사항
