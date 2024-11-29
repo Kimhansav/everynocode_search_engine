@@ -8,15 +8,23 @@ Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?n
 
 모델 성능 실험 기록.pptx에서 사용한 모델들의 비교를 확인할 수 있습니다.
 
+<br/><br/><br/>
+
+
 ## 개요
 
 bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게시글 데이터를 입력하면 전처리부터 질문-답변 선별, 텍스트 요약, sentence 임베딩 생성까지 수행합니다. 얻은 데이터셋을 Google Cloud Storage에 업로드하고, app.py를 docker 이미지로 제작한 후 Google Cloud Run에 업로드하면 검색 엔진 API를 만들 수 있습니다. 이 API의 엔드포인트에 검색 문장을 GET 요청으로 전송하면 Storage의 데이터셋에서 이와 관련된 질문-답변을 유사도가 높은 순서로 반환받습니다.
+
+<br/><br/><br/>
+
 
 ## 코드 및 모델 설명
 
 ### 코드
 
 #### latest(사용 중)
+
+<br/>
 
  <details>
   <summary>BP_preprocess</summary>
@@ -198,6 +206,8 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
 </details>
 
+<br/>
+
 #### old(사용X)
 
 <details>
@@ -234,6 +244,9 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   Flask 사용한 서버 코드입니다.<br/>
 
 </details>
+
+<br/><br/><br/>
+
 
 ### 훈련시킨 모델
 
@@ -466,6 +479,9 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
 
  </details>
 
+<br/><br/><br/>
+
+
 ## How to use
  
 구글 계정으로 로그인해 Google Cloud Platform에 새 프로젝트를 만듭니다. 이 프로젝트의 Cloud Run에는 Docker 이미지가, Cloud Storage에는 검색 엔진에 사용될 데이터셋이 업로드됩니다.
@@ -484,6 +500,9 @@ bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게�
   ![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/ddad5e1a-0b2b-40e6-93c4-e6afcff5ae38)
 
 latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. 아래의 설명을 따라 BP_preprocess부터 순서대로 코드를 실행해 검색 엔진에 활용될 데이터셋을 얻습니다. 
+
+<br/><br/><br/>
+
 
 ### 데이터셋 제작
 
@@ -575,6 +594,8 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
   런타임 유형을 GPU로 변경한 후 전체 코드를 실행합니다.
 </details>
 
+<br/><br/><br/>
+
 
 ### API 제작
 
@@ -589,6 +610,9 @@ API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있�
 
 dockerfile에서 키 파일의 경로를 설정하는 부분을 다운로드한 .json 파일의 경로와 일치하도록 수정하고 Docker 이미지로 제작한 뒤, Google Cloud Run에 업로드합니다. 
 
+<br/><br/><br/>
+
+
 ## 추후 개선사항
 
 ### Text Classification(질문 선별, 답변 선별)
@@ -599,10 +623,14 @@ F1 score를 활용할 계획입니다. 훈련시킨 모델로 실제 데이터�
 
 +벤치마크 점수가 평균적으로 더 높은 KcELECTRA도 테스트할 예정입니다.
 
+<br/>
+
 ### Summarization(질문-답변 쌍 요약)
 
 RDASS를 활용할 계획입니다. 요약 모델의 경우 ROUGE를 사용할 수도 있지만, 영어와 달리 한글의 경우 어근에 붙은 접사가 단어의 역할을 결정하며 단어의 변형이 자주 일어나므로 RDASS가 잘 작동할 확률이 높습니다.
 이때 문제는 데이터셋 제작 비용이 높다는 것입니다. 이를 해결하기 위해 GPT와 같이 이미 어느 정도 타겟 도메인에 대해 학습한 모델이 요약을 진행하게 하고, 얻은 요약본을 요약 모델이 학습하는 방법 등을 사용하려고 합니다.
+
+<br/>
 
 ### Feature Extraction(유사도 계산을 위한 문장 임베딩 생성)
 
