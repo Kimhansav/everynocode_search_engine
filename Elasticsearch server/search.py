@@ -19,11 +19,12 @@ class Search:
         self.model = AutoModel.from_pretrained('BM-K/KoSimCSE-bert-multitask') #훈련시킨 임베딩 생성 모델을 불러오기
         self.tokenizer = AutoTokenizer.from_pretrained('BM-K/KoSimCSE-bert-multitask')
 
-        # self.es = Elasticsearch('https://localhost:9200', 로컬의 경우 localhost:9200으로 통신
+        # #로컬의 경우 localhost:9200으로 통신
+        # self.es = Elasticsearch('https://localhost:9200', 
         #                         basic_auth=("elastic", os.getenv("ELASTIC_PASSWORD")), verify_certs=False) 
 
-        #gcp 수정버전(내부ip)
-        self.es = Elasticsearch('http://34.47.80.218:9200', #gcp에 업로드할 경우 내부 ip로 통신
+        #gcp 수정버전(외부ip)
+        self.es = Elasticsearch('http://34.47.80.218:9200',
                                 basic_auth=("elastic", os.getenv("ELASTIC_PASSWORD")), verify_certs=False) 
 
 

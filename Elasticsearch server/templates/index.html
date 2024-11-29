@@ -6,6 +6,13 @@
           <input type="text" class="form-control" name="query" id="query" placeholder="Enter your search query" value="{{ query }}" autofocus>
       </div>
     </form>
+    {% if rag_result %}
+        <div class="alert alert-info mt-3">
+            <h5>GPT RAG Response</h5>
+            <p>{{ rag_result }}</p>
+        </div>
+    {% endif %}
+
     {% if results %}
         <div class="row mb-3">
             <div class="col-2 mt-2">

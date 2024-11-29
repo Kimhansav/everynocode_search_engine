@@ -1,11 +1,23 @@
 import re
 import ast
+import os
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from search import Search
+from openai import OpenAI
+
+load_dotenv()
+OPENAI_PROJECT_ID = os.getenv("OPENAI_PROJECT_ID")
+OPENAI_ORG_ID = os.getenv("OPENAI_ORG_ID")
+
 
 app = Flask(__name__)
+app.secret_key = 'password' #session 사용할 때 필요한 secret key
 es = Search()
+client = OpenAI(
+    organization=OPENAI_ORG_ID,
+    project=OPENAI_PROJECT_ID,
+)
 
 def extract_filters(query):
     filters = []
@@ -117,10 +129,42 @@ def handle_search():
             if bucket['doc_count'] > 0
         },
     }
+
+    #gpt-4o-mini로 rag 답변 생성
+    if from_ == 0:
+        k = 1
+        context = ""
+        for hit in results["hits"]["hits"][:k]:
+            try: #answer_withurl이 커뮤니티 글인 경우 []로 둘러싸여 있지 않기에 ast.literal_eval 사용 불가, 예외처리
+                answers = ast.literal_eval(hit['_source']['answer_withurl'])
+            except (ValueError, SyntaxError):
+                answers = ast.literal_eval('["' + hit['_source']['answer_withurl'] + '"]')
+        
+            context = "\n".join(answers)  # 상위 k개 문서 텍스트
+        
+        #첫 페이지에서 생성된 rag 답변 유지되어야 함
+    
+        completion = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": f"Question: {query}, 짧게 대답해. \n Context: {context}"}
+                ],
+            max_completion_tokens = 500,
+            temperature = 0.5
+        )
+        session['rag_result'] = completion.choices[0].message.content
+    else:
+        completion = None
+
+
+
     return render_template('index.html', results=results['hits']['hits'],
                            query=query, from_=from_,
                            total=results['hits']['total']['value'],
-                           aggs=aggs)
+                           aggs=aggs,
+                           rag_result = session.get('rag_result'),
+                           previous_from=max(0, from_ - 10))
 
 @app.get('/document/<id>')
 def get_document(id):
