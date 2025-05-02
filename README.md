@@ -14,7 +14,7 @@ Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?n
 ## 개요
 <details>
   ![image](screenshots/predata.png)
-  ![image]([screenshots/ex1_search.png](https://github.com/Kimhansav/everynocode_search_engine/blob/3083c1c3d366b6c8483e53bd673635644dd10ba3/screenshots/ex1_search.png))
+  ![image](https://github.com/Kimhansav/everynocode_search_engine/blob/3083c1c3d366b6c8483e53bd673635644dd10ba3/screenshots/ex1_search.png)
   ![image](screenshots/ex1_info.png)
  ![image](screenshots/ex2_search.png)
  ![image](screenshots/ex2_info.png)
