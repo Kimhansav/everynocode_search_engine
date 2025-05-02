@@ -2,6 +2,7 @@ import re
 import ast
 import os
 
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, session
 from search import Search
 from openai import OpenAI
