@@ -599,23 +599,6 @@ latest의 코드들을 Google Drive의 '내 드라이브'에 저장합니다. �
 
 <br/><br/><br/>
 
-
-### API 제작
-
-API를 제작할 때 Google Cloud Storage의 데이터셋을 참조할 수 있도록 해당 프로젝트의 서비스 계정의 키 파일(.json)을 dockerfile에 추가해야 합니다.
-![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/13ef9a71-1391-406e-98a3-bf29d66e75df)
-
-![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/ed016edf-e1c2-430e-ab7e-02b1c31212cd)
-
-![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/f7f9a58d-1652-4990-b73e-d99f04387d98)
-
-![image](https://github.com/Kimhansav/everynocode_search_engine/assets/134425555/663fe13b-0d51-4d08-bac6-6db39857bbe8)
-
-dockerfile에서 키 파일의 경로를 설정하는 부분을 다운로드한 .json 파일의 경로와 일치하도록 수정하고 Docker 이미지로 제작한 뒤, Google Cloud Run에 업로드합니다. 
-
-<br/><br/><br/>
-
-
 ## 추후 개선사항
 
 ### Text Classification(질문 선별, 답변 선별)
