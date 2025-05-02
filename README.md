@@ -13,8 +13,8 @@ Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?n
 
 ## 개요
 <details>
-![Image](https://github.com/user-attachments/assets/b70189a9-bb4f-4836-9f5b-d4c77107b23a)
-
+<img width="1746" alt="Image" src="https://github.com/user-attachments/assets/10603021-0508-41d2-b781-e4267b6cbbfd" />
+ 
 <img width="1533" alt="Image" src="https://github.com/user-attachments/assets/0278c606-e3f4-46e0-aba9-691391c7b595" />
 
 <img width="2203" alt="Image" src="https://github.com/user-attachments/assets/e07fd58d-090f-4dad-a843-652053031f20" />
