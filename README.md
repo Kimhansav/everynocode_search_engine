@@ -13,13 +13,19 @@ Figma Board : https://www.figma.com/board/j0LTHO16epMX4jWug51ZOV/BubbleProject?n
 
 ## 개요
 <details>
-  ![image](screenshots/predata.png)
-  ![image](https://github.com/Kimhansav/everynocode_search_engine/blob/3083c1c3d366b6c8483e53bd673635644dd10ba3/screenshots/ex1_search.png?raw=true)
-  ![image](screenshots/ex1_info.png)
- ![image](screenshots/ex2_search.png)
- ![image](screenshots/ex2_info.png)
- ![image](screenshots/ex3_search.png)
- ![image](screenshots/ex3_info.png)
+![Image](https://github.com/user-attachments/assets/b70189a9-bb4f-4836-9f5b-d4c77107b23a)
+
+<img width="1533" alt="Image" src="https://github.com/user-attachments/assets/0278c606-e3f4-46e0-aba9-691391c7b595" />
+
+<img width="2203" alt="Image" src="https://github.com/user-attachments/assets/e07fd58d-090f-4dad-a843-652053031f20" />
+
+<img width="1938" alt="Image" src="https://github.com/user-attachments/assets/97b28b6f-f64e-49c6-b128-7ea8b77f7c1b" />
+
+<img width="2203" alt="Image" src="https://github.com/user-attachments/assets/1137dd53-fe91-43cf-b213-3137f42c118d" />
+
+<img width="1610" alt="Image" src="https://github.com/user-attachments/assets/4e63b26a-6e4b-42c4-aa85-59902270a330" />
+
+<img width="2198" alt="Image" src="https://github.com/user-attachments/assets/f9564a41-e3cd-4739-9e0e-76ba48b8335a" />
 </details>
 
 bubble.io에 대한 카카오톡 대화문 원본 데이터와 커뮤니티 게시글 데이터를 입력하면 전처리부터 질문-답변 선별, 텍스트 요약, sentence 임베딩 생성까지 수행합니다. 얻은 데이터셋을 Google Cloud Storage에 업로드하고, app.py를 docker 이미지로 제작한 후 Google Cloud Run에 업로드하면 검색 엔진 API를 만들 수 있습니다. 이 API의 엔드포인트에 검색 문장을 GET 요청으로 전송하면 Storage의 데이터셋에서 이와 관련된 질문-답변을 유사도가 높은 순서로 반환받습니다.
